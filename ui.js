@@ -29,10 +29,64 @@ class UI {
     </div>
     <h3 class="page-heading mb-3">Latest Repos</h3> 
     <div id="repos"></div>
-    `;
+    `
   }
-  showAlert() {
 
+  // Show user repos
+  showRepos(repos) {
+    let output = '';
+
+    repos.forEach(function(repo){
+      output += `
+        <div class="card card-body mb-2">
+          <div class="row">
+            <div class="col-md-6">
+              <a href="${repo.html_url}" target="_blank">${repo.name}</a> 
+
+            </div>
+            <div class="col-md-6">
+            <span class="badge badge-primary"> Stars: ${repo.stargazers_count}</span>
+            <span class="badge badge-secondary"> Watchers: ${repo.watchers_count}</span>
+            <span class="badge badge-info"> Forks: ${repo.forks_count}</span>
+            </div>
+          </div>
+        </div>
+      `
+    })
+
+    // Output repos
+    document.getElementById('repos').innerHTML = output;
+  }
+
+  // Show alert
+  showAlert(message, className) {
+    // Remove alerts bofore creating new ones
+    this.clearAlert();
+    // Create div
+    const div = document.createElement('div');
+    div.className = className;
+    // Add text
+    div.appendChild(document.createElement(message));
+    // Get parent
+    const container = document.querySelector('.searchContainer');
+    // Get search box
+    const search = document.querySelector('.search')
+    // Insert alert
+    container.insertBefore(div, search); 
+
+    // Timeout after 3 secs
+    setTimeout(() => {
+      this.clearAlert();
+    }, 3000)
+  } 
+
+  // clear alert message
+  clearAlert() {
+    const currentAlert = document.querySelector('.alert');
+
+    if (currentAlert) {
+      currentAlert.remove();
+    }
   }
 
   // Clear profile
